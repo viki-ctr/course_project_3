@@ -3,12 +3,7 @@ import psycopg2
 
 class DBManager:
     def __init__(self, dbname, user, password, host="localhost"):
-        self.conn = psycopg2.connect(
-            dbname=dbname,
-            user=user,
-            password=password,
-            host=host
-        )
+        self.conn = psycopg2.connect(dbname=dbname, user=user, password=password, host=host)
         self.cur = self.conn.cursor()
 
     def get_companies_and_vacancies_count(self):
@@ -22,7 +17,9 @@ class DBManager:
         return self.cur.fetchall()
 
     def get_all_vacancies(self):
-        """Получает список всех вакансий с указанием названия компании, названия вакансии и зарплаты и ссылки на вакансию."""
+        """
+        Получает список всех вакансий с указанием названия компании, названия вакансии и зарплаты и ссылки на вакансию.
+        """
         self.cur.execute(
             "SELECT e.name, v.title, v.salary_from, v.salary_to, v.currency, v.url "
             "FROM vacancies v "
@@ -47,7 +44,7 @@ class DBManager:
             "FROM vacancies v "
             "JOIN employers e ON v.employer_id = e.employer_id "
             "WHERE (salary_from + salary_to) / 2 > %s",
-            (avg_salary,)
+            (avg_salary,),
         )
         return self.cur.fetchall()
 
@@ -58,7 +55,7 @@ class DBManager:
             "FROM vacancies v "
             "JOIN employers e ON v.employer_id = e.employer_id "
             "WHERE v.title ILIKE %s",
-            (f"%{keyword}%",)
+            (f"%{keyword}%",),
         )
         return self.cur.fetchall()
 

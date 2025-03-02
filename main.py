@@ -1,7 +1,7 @@
 from config.config import config
-from src.work_with_db import DBManager
-from src.hh_parser import HeadHunterAPI
 from src.create_table import create_database, save_data_to_database
+from src.hh_parser import HeadHunterAPI
+from src.work_with_db import DBManager
 
 
 def main() -> None:

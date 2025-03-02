@@ -1,5 +1,6 @@
-import psycopg2
 from typing import Any
+
+import psycopg2
 
 
 def create_database(dbname, parameters):
@@ -14,16 +15,19 @@ def create_database(dbname, parameters):
     conn = psycopg2.connect(dbname=dbname, **parameters)
     cur = conn.cursor()
 
-    cur.execute("""
+    cur.execute(
+        """
         CREATE TABLE employers (
             employer_id SERIAL PRIMARY KEY,
             name VARCHAR(255) NOT NULL,
             description TEXT,
             website VARCHAR(255)
         )
-    """)
+    """
+    )
 
-    cur.execute("""
+    cur.execute(
+        """
         CREATE TABLE vacancies (
             vacancy_id SERIAL PRIMARY KEY,
             employer_id INT REFERENCES employers(employer_id),
@@ -33,7 +37,8 @@ def create_database(dbname, parameters):
             currency VARCHAR(10),
             url VARCHAR(255) NOT NULL
         )
-    """)
+    """
+    )
 
     conn.commit()
     cur.close()
