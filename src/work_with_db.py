@@ -2,11 +2,16 @@ import psycopg2
 
 
 class DBManager:
-    def __init__(self, dbname, user, password, host="localhost"):
-        self.conn = psycopg2.connect(dbname=dbname, user=user, password=password, host=host)
+    def __init__(self, dbname: str, params: dict):
+        """
+        Инициализация класса для работы с базой данных.
+        :param dbname: Имя базы данных.
+        :param params: Параметры подключения к базе данных.
+        """
+        self.conn = psycopg2.connect(dbname=dbname, **params)
         self.cur = self.conn.cursor()
 
-    def get_companies_and_vacancies_count(self):
+    def get_companies_and_vacancies_count(self) -> list[tuple]:
         """Получает список всех компаний и количество вакансий у каждой компании."""
         self.cur.execute(
             "SELECT e.name, COUNT(v.vacancy_id) "
@@ -16,7 +21,7 @@ class DBManager:
         )
         return self.cur.fetchall()
 
-    def get_all_vacancies(self):
+    def get_all_vacancies(self) -> list[tuple]:
         """
         Получает список всех вакансий с указанием названия компании, названия вакансии и зарплаты и ссылки на вакансию.
         """
@@ -27,7 +32,7 @@ class DBManager:
         )
         return self.cur.fetchall()
 
-    def get_avg_salary(self):
+    def get_avg_salary(self) -> float:
         """Получает среднюю зарплату по вакансиям."""
         self.cur.execute(
             "SELECT AVG((salary_from + salary_to) / 2) "
@@ -36,7 +41,7 @@ class DBManager:
         )
         return self.cur.fetchone()[0]
 
-    def get_vacancies_with_higher_salary(self):
+    def get_vacancies_with_higher_salary(self) -> list[tuple]:
         """Получает список всех вакансий, у которых зарплата выше средней по всем вакансиям."""
         avg_salary = self.get_avg_salary()
         self.cur.execute(
@@ -48,7 +53,7 @@ class DBManager:
         )
         return self.cur.fetchall()
 
-    def get_vacancies_with_keyword(self, keyword):
+    def get_vacancies_with_keyword(self, keyword: str) -> list[tuple]:
         """Получает список всех вакансий, в названии которых содержатся переданные в метод слова."""
         self.cur.execute(
             "SELECT e.name, v.title, v.salary_from, v.salary_to, v.currency, v.url "
@@ -59,7 +64,7 @@ class DBManager:
         )
         return self.cur.fetchall()
 
-    def close(self):
+    def close(self) -> None:
         """Закрывает соединение с БД."""
         self.cur.close()
         self.conn.close()

@@ -109,5 +109,5 @@ class HeadHunterAPI:
         return transformed_vacancy
 
 
-if __name__ == "__main__":
-    print(HeadHunterAPI().get_companies(["Хэдхантер", "СОГАЗ"]))
+# if __name__ == "__main__":
+#     print(HeadHunterAPI().get_companies(["Хэдхантер", "СОГАЗ"]))

@@ -77,18 +77,14 @@ HeadHunter, ПАКС, Level Group, Роскосмос, институт тепл
             top_n = int(input("""Введите количество вакансий для вывода: """))
             for row in rows[:top_n]:
                 print(
-                    f"""Название вакансии:\n{row[2]}
-Размер заработной платы: {row[3]}р.\n"""
+                    f"""Название вакансии:\n{row[2]} Размер заработной платы: {row[3]}р.\n"""
                 )
 
         elif case == "4":
             keyword = input("Введите ключевое слово в названии вакансии: ")
             rows = DBManager(database_name, params).get_vacancies_with_keyword(keyword)
             for row in rows:
-                print(
-                    f"""Название вакансии:\n{row[2]}
-Размер заработной платы: {row[3]}р.\n"""
-                )
+                print(f"""Название вакансии:\n{row[2]} Размер заработной платы: {row[3]}р.\n""")
 
         elif case == "5":
             print("Спасибо! Приходите еще!")
