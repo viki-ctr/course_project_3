@@ -87,10 +87,9 @@ def save_data_to_database(
             )
 
         for vacancy in vacancies_data:
-            salary_from = vacancy.get("salary", {}).get("from") if vacancy.get("salary") else None
-            salary_to = vacancy.get("salary", {}).get("to") if vacancy.get("salary") else None
-            currency = vacancy.get("salary", {}).get("currency") if vacancy.get("salary") else None
-
+            salary_from = 0
+            salary_to = 0
+            currency = 0
             cur.execute(
                 """
                 INSERT INTO vacancies (vacancy_id, employer_id, title, salary_from, salary_to, currency, url)
@@ -98,13 +97,13 @@ def save_data_to_database(
                 ON CONFLICT (vacancy_id) DO NOTHING
                 """,
                 (
-                    vacancy["id"],
-                    vacancy["employer"]["id"],
+                    vacancy["vacancy_id"],
+                    vacancy["company_id"],
                     vacancy["name"],
                     salary_from,
                     salary_to,
                     currency,
-                    vacancy["alternate_url"],
+                    vacancy["url"]
                 ),
             )
 
